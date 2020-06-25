@@ -114,11 +114,15 @@ RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
 # tmux
 # ------------------------------------------------------------------
 
+# personal tmux config file
 COPY ./.tmux.conf /root/
 RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
     PIP_INSTALL="python -m pip --no-cache-dir install --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple" && \
     GIT_CLONE="git clone --depth 10" && \
-    apt update && $APT_INSTALL tmux && \
+    apt update && \
+        $APT_INSTALL tmux && \
+        # needed by opencv
+        $APT_INSTALL libsm6 libxrender1 libxext6 && \ 
     echo "tmux installed."
 
 # ==================================================================
