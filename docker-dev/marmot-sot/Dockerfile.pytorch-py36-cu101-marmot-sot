@@ -111,7 +111,7 @@ RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
     rm -rf /var/lib/apt/lists/* /tmp/* ~/*
 
 # ==================================================================
-# tmux
+# additional apt pacakges
 # ------------------------------------------------------------------
 
 # personal tmux config file
@@ -123,6 +123,7 @@ RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
         $APT_INSTALL tmux && \
         # needed by opencv
         $APT_INSTALL libsm6 libxrender1 libxext6 && \ 
+        $APT_INSTALL htop && \ 
     echo "tmux installed."
 
 # ==================================================================
