@@ -109,3 +109,21 @@ RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
     apt-get clean && \
     apt-get autoremove && \
     rm -rf /var/lib/apt/lists/* /tmp/* ~/*
+
+# ==================================================================
+# tmux
+# ------------------------------------------------------------------
+
+COPY ./.tmux.conf /root/
+RUN $APT_INSTALL tmux && \
+    echo "tmux installed."
+
+# ==================================================================
+# video_analyst
+# ------------------------------------------------------------------
+
+RUN mkdirs -p /workspace/Proejects && cd $_ $$ \
+    $GIT_CLONE https://github.com/MARMOTatZJU/video_analyst.git && cd video_analyst && \
+    $PIP_INSTALL -r requirements.txt $$ \
+    echo "ended."
+
