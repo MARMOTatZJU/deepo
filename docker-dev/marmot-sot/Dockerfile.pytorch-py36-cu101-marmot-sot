@@ -115,15 +115,21 @@ RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
 # ------------------------------------------------------------------
 
 COPY ./.tmux.conf /root/
-RUN $APT_INSTALL tmux && \
+RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
+    PIP_INSTALL="python -m pip --no-cache-dir install --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple" && \
+    GIT_CLONE="git clone --depth 10" && \
+    apt update && $APT_INSTALL tmux && \
     echo "tmux installed."
 
 # ==================================================================
 # video_analyst
 # ------------------------------------------------------------------
-
-RUN mkdirs -p /workspace/Proejects && cd $_ $$ \
+ 
+RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
+    PIP_INSTALL="python -m pip --no-cache-dir install --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple" && \
+    GIT_CLONE="git clone --depth 10" && \
+    REPO_DIR=/workspace/Projects && mkdir -p $REPO_DIR && cd $_ && \
     $GIT_CLONE https://github.com/MARMOTatZJU/video_analyst.git && cd video_analyst && \
-    $PIP_INSTALL -r requirements.txt $$ \
+    $PIP_INSTALL -r requirements.txt && \
     echo "ended."
 
