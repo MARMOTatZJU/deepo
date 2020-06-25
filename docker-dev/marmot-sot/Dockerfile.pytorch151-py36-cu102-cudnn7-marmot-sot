@@ -8,6 +8,10 @@
 FROM nvidia/cuda:10.2-cudnn7-devel-ubuntu18.04
 ENV LANG C.UTF-8
 
+ENV APT_INSTALL="apt-get install -y --no-install-recommends" \
+    PIP_INSTALL="python -m pip --no-cache-dir install --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple --default-timeout=100" \
+    GIT_CLONE="git clone --depth 1"
+
 # added by user
 COPY ./sources.list.tuna.txt /etc/apt/
 RUN bash -xc " \
@@ -18,11 +22,7 @@ RUN bash -xc " \
   popd \
 "
 
-RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
-    PIP_INSTALL="python -m pip --no-cache-dir install --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple --default-timeout=100" && \
-    GIT_CLONE="git clone --depth 1" && \
-
-    rm -rf /var/lib/apt/lists/* \
+RUN rm -rf /var/lib/apt/lists/* \
            /etc/apt/sources.list.d/cuda.list \
            /etc/apt/sources.list.d/nvidia-ml.list && \
 
@@ -119,10 +119,7 @@ RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
 
 # personal tmux config file
 COPY ./.tmux.conf /root/
-RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
-    PIP_INSTALL="python -m pip --no-cache-dir install --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple --default-timeout=100" && \
-    GIT_CLONE="git clone --depth 1" && \
-    apt update && \
+RUN apt update && \
         $APT_INSTALL tmux && \
         # needed by opencv
         $APT_INSTALL libsm6 libxrender1 libxext6 && \ 
@@ -133,10 +130,7 @@ RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
 # video_analyst
 # ------------------------------------------------------------------
  
-RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
-    PIP_INSTALL="python -m pip --no-cache-dir install --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple --default-timeout=100" && \
-    GIT_CLONE="git clone --depth 1" && \
-    REPO_DIR=/workspace/Projects && mkdir -p $REPO_DIR && cd $_ && \
+RUN REPO_DIR=/workspace/Projects && mkdir -p $REPO_DIR && cd $_ && \
     $GIT_CLONE https://github.com/MARMOTatZJU/video_analyst.git && cd video_analyst && \
     $PIP_INSTALL -r requirements.txt && \
     echo "ended."
