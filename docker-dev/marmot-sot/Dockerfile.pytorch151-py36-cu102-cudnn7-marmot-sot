@@ -126,6 +126,8 @@ RUN apt update && \
         $APT_INSTALL htop && \ 
     echo "tmux installed."
 
+# TODO: add cloning of https://github.com/tmux-plugins/tmux-resurrect @ /root/Utils
+
 # ==================================================================
 # video_analyst
 # ------------------------------------------------------------------
@@ -135,3 +137,4 @@ RUN REPO_DIR=/workspace/Projects && mkdir -p $REPO_DIR && cd $_ && \
     $PIP_INSTALL -r requirements.txt && \
     echo "ended."
 
+# TODO: only wget & install: https://github.com/MARMOTatZJU/video_analyst/blob/dev/requirements.txt
