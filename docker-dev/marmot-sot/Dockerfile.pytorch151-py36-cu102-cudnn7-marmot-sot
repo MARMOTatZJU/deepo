@@ -9,7 +9,7 @@ FROM nvidia/cuda:10.2-cudnn7-devel-ubuntu18.04
 ENV LANG C.UTF-8
 
 ENV APT_INSTALL="apt-get install -y --no-install-recommends" \
-    PIP_INSTALL="python -m pip --no-cache-dir install --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple --default-timeout=100" \
+    PIP_INSTALL="python -m pip --no-cache-dir install --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple --default-timeout=10000" \
     GIT_CLONE="git clone --depth 1"
 
 # added by user
@@ -120,21 +120,19 @@ RUN rm -rf /var/lib/apt/lists/* \
 # personal tmux config file
 COPY ./.tmux.conf /root/
 RUN apt update && \
-        $APT_INSTALL tmux && \
+        $APT_INSTALL tmux less && \
         # needed by opencv
         $APT_INSTALL libsm6 libxrender1 libxext6 && \ 
         $APT_INSTALL htop && \ 
+    mkdir -p /root/Utils && cd /root/Utils && \
+        $GIT_CLONE https://github.com/tmux-plugins/tmux-resurrect && \
     echo "tmux installed."
-
-# TODO: add cloning of https://github.com/tmux-plugins/tmux-resurrect @ /root/Utils
 
 # ==================================================================
 # video_analyst
 # ------------------------------------------------------------------
  
-RUN REPO_DIR=/workspace/Projects && mkdir -p $REPO_DIR && cd $_ && \
-    $GIT_CLONE https://github.com/MARMOTatZJU/video_analyst.git && cd video_analyst && \
-    $PIP_INSTALL -r requirements.txt && \
+COPY ./requirements.txt /root/Requirements/
+RUN $PIP_INSTALL -r /root/Requirements/requirements.txt && \
     echo "ended."
 
-# TODO: only wget & install: https://github.com/MARMOTatZJU/video_analyst/blob/dev/requirements.txt
