@@ -13,6 +13,9 @@ ENV APT_INSTALL="apt-get install -y --no-install-recommends" \
     PIP_INSTALL="python -m pip --no-cache-dir install --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple --default-timeout=10000" \
     GIT_CLONE="git clone --depth 1"
 
+RUN apt-get update && \
+    $APT_INSTALL ca-certificates
+
 # added by user
 COPY ./sources.list.tuna.txt /etc/apt/
 RUN bash -xc " \
@@ -45,7 +48,7 @@ RUN DEBIAN_FRONTEND=noninteractive $APT_INSTALL \
         unrar
         # && \
 
-RUN $GIT_CLONE http://github.com/Kitware/CMake ~/cmake && \
+RUN $GIT_CLONE https://github.com/Kitware/CMake ~/cmake && \
     cd ~/cmake && \
     ./bootstrap && \
     make -j"$(nproc)" install
