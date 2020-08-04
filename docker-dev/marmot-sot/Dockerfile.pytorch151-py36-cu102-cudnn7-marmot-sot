@@ -41,6 +41,7 @@ RUN rm -rf /var/lib/apt/lists/* \
         vim \
         libssl-dev \
         curl \
+        zip \
         unzip \
         unrar \
         && \
